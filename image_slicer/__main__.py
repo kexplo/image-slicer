@@ -34,15 +34,18 @@ def run(
     image_path: Path,
     direction: SliceDirection = SliceDirection.vertical,
     delta_pixel: int = 2000,
+    output_dir: Path = Path.cwd(),
 ):
     with Image.open(image_path) as image:
         width, height = image.size
         count = 0
         filename, ext = os.path.splitext(os.path.basename(image_path))
+        if not output_dir.exists():
+            output_dir.mkdir(parents=True)
         for crop_rect in gen_slice_rects(
             width, height, delta_pixel, direction
         ):
             cropped_image = image.crop(crop_rect)
-            output_filename = f"{filename}_{count:03d}.{ext}"
-            cropped_image.save(output_filename)
+            output_path = output_dir.joinpath(f"{filename}_{count:03d}{ext}")
+            cropped_image.save(output_path)
             count += 1
