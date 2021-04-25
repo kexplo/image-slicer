@@ -49,3 +49,7 @@ def run(
             output_path = output_dir.joinpath(f"{filename}_{count:03d}{ext}")
             cropped_image.save(output_path)
             count += 1
+
+
+if __name__ == "__main__":
+    app()
